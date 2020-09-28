@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Group
+
+# Model Form Field configuration
+form: $/jcc/im/models/group/fields.yaml
+
+# Model Class name
+modelClass: Jcc\Im\Models\Group
+
+# Default redirect location
+defaultRedirect: jcc/im/groups
+
+# Create page
+create:
+    title: Create Group
+    redirect: jcc/im/groups/update/:id
+    redirectClose: jcc/im/groups
+
+# Update page
+update:
+    title: Edit Group
+    redirect: jcc/im/groups
+    redirectClose: jcc/im/groups
+
+# Preview page
+preview:
+    title: Preview Group

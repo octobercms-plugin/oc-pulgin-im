@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Chat Record
+
+# Model Form Field configuration
+form: $/jcc/im/models/chatrecord/fields.yaml
+
+# Model Class name
+modelClass: Jcc\Im\Models\ChatRecord
+
+# Default redirect location
+defaultRedirect: jcc/im/chatrecords
+
+# Create page
+create:
+    title: Create Chat Record
+    redirect: jcc/im/chatrecords/update/:id
+    redirectClose: jcc/im/chatrecords
+
+# Update page
+update:
+    title: Edit Chat Record
+    redirect: jcc/im/chatrecords
+    redirectClose: jcc/im/chatrecords
+
+# Preview page
+preview:
+    title: Preview Chat Record

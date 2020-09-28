@@ -1,0 +1,9 @@
+1.0.1: First version of im
+1.0.2:
+    - init
+    - create_chat_records_table.php
+    - create_group_types_table.php
+    - create_groups_table.php
+    - create_msg_boxes_table.php
+    - create_user_group_types_table.php
+    - create_user_groups_table.php

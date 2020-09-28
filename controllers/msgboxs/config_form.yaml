@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Msg Box
+
+# Model Form Field configuration
+form: $/jcc/im/models/msgbox/fields.yaml
+
+# Model Class name
+modelClass: Jcc\Im\Models\MsgBox
+
+# Default redirect location
+defaultRedirect: jcc/im/msgboxs
+
+# Create page
+create:
+    title: Create Msg Box
+    redirect: jcc/im/msgboxs/update/:id
+    redirectClose: jcc/im/msgboxs
+
+# Update page
+update:
+    title: Edit Msg Box
+    redirect: jcc/im/msgboxs
+    redirectClose: jcc/im/msgboxs
+
+# Preview page
+preview:
+    title: Preview Msg Box

@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Group Type
+
+# Model Form Field configuration
+form: $/jcc/im/models/grouptype/fields.yaml
+
+# Model Class name
+modelClass: Jcc\Im\Models\GroupType
+
+# Default redirect location
+defaultRedirect: jcc/im/grouptypes
+
+# Create page
+create:
+    title: Create Group Type
+    redirect: jcc/im/grouptypes/update/:id
+    redirectClose: jcc/im/grouptypes
+
+# Update page
+update:
+    title: Edit Group Type
+    redirect: jcc/im/grouptypes
+    redirectClose: jcc/im/grouptypes
+
+# Preview page
+preview:
+    title: Preview Group Type

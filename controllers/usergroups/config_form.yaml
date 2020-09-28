@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: User Group
+
+# Model Form Field configuration
+form: $/jcc/im/models/usergroup/fields.yaml
+
+# Model Class name
+modelClass: Jcc\Im\Models\UserGroup
+
+# Default redirect location
+defaultRedirect: jcc/im/usergroups
+
+# Create page
+create:
+    title: Create User Group
+    redirect: jcc/im/usergroups/update/:id
+    redirectClose: jcc/im/usergroups
+
+# Update page
+update:
+    title: Edit User Group
+    redirect: jcc/im/usergroups
+    redirectClose: jcc/im/usergroups
+
+# Preview page
+preview:
+    title: Preview User Group
