@@ -31,6 +31,7 @@ class Plugin extends PluginBase
     public function register()
     {
         $this->app->bind(\Jcc\Im\Contracts\Wbsocket\ImContract::class,\Jcc\Im\Services\ImService::class);
+        $this->app->bind(\Jcc\Im\Contracts\Wbsocket\ChatContract::class,\Jcc\Im\Services\ChatService::class);
     }
 
     /**

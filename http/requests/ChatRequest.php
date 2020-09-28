@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Validation\Rule;
 
-class ImRequest extends FormRequest
+class ChatRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,12 +20,6 @@ class ImRequest extends FormRequest
 
         switch ($method) {
 
-            case 'send':
-                //todo 发送权限验证
-                //todo 非好友不能发私信 做个开关
-                //todo 非群友不能发信息 做个开关
-
-                break;
             case 'chatRecords':
                 //todo 发送权限验证
                 break;
@@ -46,25 +40,6 @@ class ImRequest extends FormRequest
         $method = $this->route()->getActionMethod();
         switch ($method) {
 
-            case 'bind':
-                $rules = [
-                    'client_id' => ['required'],
-                ];
-                break;
-            case 'send':
-                $rules = [
-                    'type'      => ['required', Rule::in(['friend', 'group'])], // 群消息还是好友友消息
-                    'model_id' => ['required'],//
-                    'content'   => [
-                        'required',
-                        'array',
-                        function ($attribute, $value, $fail) {
-                            //todo 信息有效性进行验证
-                            //todo type: text emoji file system img  see https://github.com/mattmezza/vue-beautiful-chat
-                        }
-                    ]
-                ];
-                break;
             case 'chatRecords':
                 $rules = [
                     'type'=>['required',Rule::in(['friend','group'])],
