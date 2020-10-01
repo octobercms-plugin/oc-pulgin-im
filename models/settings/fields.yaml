@@ -1,0 +1,14 @@
+# ===================================
+#  Field Definitions
+# ===================================
+
+fields:
+    gateway_register_address:
+        label: jcc.im::lang.settings.fields.registerAddress.label
+    support_before_bind:
+        label: jcc.im::lang.settings.fields.support_before_bind.label
+        comment: jcc.im::lang.settings.fields.support_before_bind.comment
+    support_after_bind:
+        label: jcc.im::lang.settings.fields.support_after_bind.label
+        comment: jcc.im::lang.settings.fields.support_after_bind.comment
+

@@ -23,8 +23,7 @@ class ImController extends Controller
         $im = app()->make(\Jcc\Im\Contracts\Wbsocket\ImContract::class);
         $im->bind($data);
 
-        Event::fire('jcc.im.afterBind', [&$data]); //todo
-
+        Event::fire('jcc.im.afterBind', [$data]);
 
         return $this->response->success($data, 'ok');
     }
@@ -43,9 +42,7 @@ class ImController extends Controller
         app()->make(\Jcc\Im\Contracts\Wbsocket\ImContract::class)->send($data);
         Event::fire('jcc.im.afterSend', [$data]);
         return $this->response->success([], 'ok');
-
     }
-
 
 
 }

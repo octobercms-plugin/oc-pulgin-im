@@ -22,7 +22,7 @@ class ChatRecord extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = [];
+    protected $fillable = ['if_read'];
 
     /**
      * @var array Validation rules for attributes
@@ -32,7 +32,9 @@ class ChatRecord extends Model
     /**
      * @var array Attributes to be cast to native types
      */
-    protected $casts = [];
+    protected $casts = [
+        'content' =>'json'
+    ];
 
     /**
      * @var array Attributes to be cast to JSON
@@ -66,11 +68,11 @@ class ChatRecord extends Model
     public $hasManyThrough = [];
     public $belongsTo = [
         'from_user' => [
-            \RLuders\JWTAuth\Models\User::class,
+            \Jcc\Jwt\Models\User::class,
             'key' => 'send_id'
         ],
         'to_user'   => [
-            \RLuders\JWTAuth\Models\User::class,
+            \Jcc\Jwt\Models\User::class,
             'key' => 'receive_id'
         ],
         'group'     => [
@@ -84,4 +86,14 @@ class ChatRecord extends Model
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
+
+
+    const IF_READ_0 = 0;
+    const IF_READ_1 = 1;
+
+    public static $readMaps = [
+        self::IF_READ_0 => '未读',
+        self::IF_READ_1 => '已读',
+    ];
+
 }

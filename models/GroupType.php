@@ -68,12 +68,12 @@ class GroupType extends Model
     public $hasManyThrough = [];
     public $belongsTo = [
         'user' => [
-            \RLuders\JWTAuth\Models\User::class,
+            \Jcc\Jwt\Models\User::class,
         ]
     ];
     public $belongsToMany = [
         'users' => [
-            \RLuders\JWTAuth\Models\User::class,
+            \Jcc\Jwt\Models\User::class,
             'table'    => 'jcc_im_user_group_types',
             'key'      => 'group_type_id',
             'otherKey' => 'user_id'

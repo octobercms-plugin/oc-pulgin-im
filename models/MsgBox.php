@@ -22,7 +22,7 @@ class MsgBox extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = [];
+    protected $fillable = ['read'];
 
     /**
      * @var array Validation rules for attributes
@@ -66,7 +66,7 @@ class MsgBox extends Model
     public $hasManyThrough = [];
     public $belongsTo = [
         'from_user'  => [
-            \RLuders\JWTAuth\Models\User::class,
+            \Jcc\Jwt\Models\User::class,
             'key' => 'from',
         ],
         'from_group' => [
@@ -80,4 +80,13 @@ class MsgBox extends Model
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
+
+    const READ_0 = 0;
+    const READ_1 = 1;
+
+    public static $readMaps = [
+        self::READ_0 => '未读',
+        self::READ_1 => '已读',
+
+    ];
 }

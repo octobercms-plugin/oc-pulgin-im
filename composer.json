@@ -1,0 +1,5 @@
+{
+    "require": {
+        "workerman/gatewayclient": "^3.0"
+    }
+}

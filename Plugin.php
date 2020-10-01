@@ -2,26 +2,16 @@
 
 use Backend;
 use System\Classes\PluginBase;
+use Jcc\Im\Models\Group;
+use Jcc\Im\Models\GroupType;
+use Jcc\Im\Models\MsgBox;
+use Jcc\Im\Events\ImEventHandler;
 
 /**
  * im Plugin Information File
  */
 class Plugin extends PluginBase
 {
-    /**
-     * Returns information about this plugin.
-     *
-     * @return array
-     */
-    public function pluginDetails()
-    {
-        return [
-            'name'        => 'im',
-            'description' => 'No description provided yet...',
-            'author'      => 'jcc',
-            'icon'        => 'icon-leaf'
-        ];
-    }
 
     /**
      * Register method, called when the plugin is first registered.
@@ -30,8 +20,8 @@ class Plugin extends PluginBase
      */
     public function register()
     {
-        $this->app->bind(\Jcc\Im\Contracts\Wbsocket\ImContract::class,\Jcc\Im\Services\ImService::class);
-        $this->app->bind(\Jcc\Im\Contracts\Wbsocket\ChatContract::class,\Jcc\Im\Services\ChatService::class);
+        $this->app->bind(\Jcc\Im\Contracts\Wbsocket\ImContract::class, \Jcc\Im\Services\ImService::class);
+        $this->app->bind(\Jcc\Im\Contracts\Wbsocket\ChatContract::class, \Jcc\Im\Services\ChatService::class);
     }
 
     /**
@@ -41,7 +31,28 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+        \Event::subscribe(new ImEventHandler);
+        \Jcc\Jwt\Models\User::extend(function ($model) {
+            $model->hasMany['msgboxes']     = [
+                MsgBox::class,
+                'key' => 'user_id'
+            ];
+            $model->belongsToMany['groups'] = [
+                Group::class,
+                'table'    => 'jcc_im_user_groups',
+                'key'      => 'user_id',
+                'otherKey' => 'group_id'
 
+            ];
+            $model->belongsToMany['group_types'] = [
+                GroupType::class,
+                'table'    => 'jcc_im_user_group_types',
+                'key'      => 'user_id',
+                'otherKey' => 'group_type_id'
+
+            ];
+            $model->implement[]             = \Jcc\Im\Behaviors\UserImBehavior::class;
+        });
     }
 
     /**
@@ -65,11 +76,10 @@ class Plugin extends PluginBase
      */
     public function registerPermissions()
     {
-        return []; // Remove this line to activate
 
         return [
             'jcc.im.some_permission' => [
-                'tab' => 'im',
+                'tab'   => 'im',
                 'label' => 'Some permission'
             ],
         ];

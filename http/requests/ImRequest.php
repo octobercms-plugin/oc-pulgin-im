@@ -48,14 +48,14 @@ class ImRequest extends FormRequest
 
             case 'bind':
                 $rules = [
-                    'client_id' => ['required'],
+                    'client_id' => ['required', 'string'],
                 ];
                 break;
             case 'send':
                 $rules = [
-                    'type'      => ['required', Rule::in(['friend', 'group'])], // 群消息还是好友友消息
-                    'model_id' => ['required'],//
-                    'content'   => [
+                    'type'     => ['required', 'string', Rule::in(['friend', 'group'])], // 群消息还是好友友消息
+                    'model_id' => ['required', 'integer'],//
+                    'content'  => [
                         'required',
                         'array',
                         function ($attribute, $value, $fail) {
@@ -67,8 +67,8 @@ class ImRequest extends FormRequest
                 break;
             case 'chatRecords':
                 $rules = [
-                    'type'=>['required',Rule::in(['friend','group'])],
-                    'model_id'=>['required'],
+                    'type'     => ['required', 'string', Rule::in(['friend', 'group'])],
+                    'model_id' => ['required', 'integer'],
                 ];
                 break;
             default:

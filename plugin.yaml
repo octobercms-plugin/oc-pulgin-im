@@ -1,0 +1,6 @@
+plugin:
+    name: 'jcc.im::lang.plugin.name'
+    description: 'jcc.im::lang.plugin.description'
+    author: jcc
+    icon: oc-icon-adjust
+    homepage: ''

@@ -66,12 +66,12 @@ class Group extends Model
     public $hasManyThrough = [];
     public $belongsTo = [
         'user' => [
-            \RLuders\JWTAuth\Models\User::class
+            \Jcc\Jwt\Models\User::class
         ]
     ];
     public $belongsToMany = [
         'users' => [
-            \RLuders\JWTAuth\Models\User::class,
+            \Jcc\Jwt\Models\User::class,
             'table'    => 'jcc_im_user_groups',
             'key'      => 'group_id',
             'otherKey' => 'user_id'
