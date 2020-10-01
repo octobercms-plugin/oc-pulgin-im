@@ -55,7 +55,7 @@ class ImService implements ImContract
 
                 $group = Group::find($data['model_id']);
 
-                if (Settings::get('chat_record', true)) {
+                if (Settings::get('group_chat_record', true)) {
                     //消息入库
                     $record           = new ChatRecord();
                     $record->type     = ChatRecord::TYPE_GROUP;
@@ -87,7 +87,7 @@ class ImService implements ImContract
                 break;
         }
 
-        Event::fire('jcc.im.sending', [$data]); //todo 发送过程中入库
+        //Event::fire('jcc.im.sending', [$data]); //todo 发送过程中入库
     }
 
     public function sendToUid($data)

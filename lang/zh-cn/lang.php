@@ -15,8 +15,12 @@
                 'comment' => '在绑定完成之后，做一些推送操作，比如未读消息等'
 
             ],
-            'chat_record'  => [
-                'label'   => '是否记录聊天记录',
+            'group_chat_record'   => [
+                'label'   => '是否记录群组聊天记录',
+                'comment' => ''
+            ],
+            'friend_chat_record'  => [
+                'label'   => '是否记录好友聊天记录',
                 'comment' => ''
 
             ],

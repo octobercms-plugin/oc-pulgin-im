@@ -13,8 +13,12 @@ fields:
         label: jcc.im::lang.settings.fields.support_after_bind.label
         type: checkbox
         comment: jcc.im::lang.settings.fields.support_after_bind.comment
-    chat_record:
-        label: jcc.im::lang.settings.fields.chat_record.label
+    group_chat_record:
+        label: jcc.im::lang.settings.fields.group_chat_record.label
         type: checkbox
-        comment: jcc.im::lang.settings.fields.chat_record.comment
+        comment: jcc.im::lang.settings.fields.group_chat_record.comment
+    friend_chat_record:
+        label: jcc.im::lang.settings.fields.friend_chat_record.label
+        type: checkbox
+        comment: jcc.im::lang.settings.fields.friend_chat_record.comment
 
