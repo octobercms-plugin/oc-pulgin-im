@@ -15,10 +15,15 @@
                 'comment' => '在绑定完成之后，做一些推送操作，比如未读消息等'
 
             ],
+            'chat_record'  => [
+                'label'   => '是否记录聊天记录',
+                'comment' => ''
+
+            ],
         ],
     ],
     'plugin'   => [
         'name'        => 'IM',
         'description' => '实时聊天',
-    ],
+    ]
 ];

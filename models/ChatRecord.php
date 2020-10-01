@@ -33,7 +33,7 @@ class ChatRecord extends Model
      * @var array Attributes to be cast to native types
      */
     protected $casts = [
-        'content' =>'json'
+        'content' => 'json'
     ];
 
     /**
@@ -95,5 +95,9 @@ class ChatRecord extends Model
         self::IF_READ_0 => '未读',
         self::IF_READ_1 => '已读',
     ];
+
+    const TYPE_GROUP = 'group';
+    const TYPE_FRIEND = 'friend';
+
 
 }

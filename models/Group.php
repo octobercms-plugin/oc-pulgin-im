@@ -82,4 +82,9 @@ class Group extends Model
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
+
+    public function getBindImId()
+    {
+        return $this->id;
+    }
 }

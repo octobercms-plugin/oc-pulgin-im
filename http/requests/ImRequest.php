@@ -6,6 +6,7 @@ namespace Jcc\Im\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Lang;
 
 class ImRequest extends FormRequest
 {
@@ -19,15 +20,8 @@ class ImRequest extends FormRequest
         $method = $this->route()->getActionMethod();
 
         switch ($method) {
-
             case 'send':
-                //todo 发送权限验证
-                //todo 非好友不能发私信 做个开关
-                //todo 非群友不能发信息 做个开关
 
-                break;
-            case 'chatRecords':
-                //todo 发送权限验证
                 break;
         }
 
@@ -45,8 +39,12 @@ class ImRequest extends FormRequest
 
         $method = $this->route()->getActionMethod();
         switch ($method) {
+            case 'initData'://初始化好友群组信息
+                $rules = [
 
-            case 'bind':
+                ];
+                break;
+            case 'bind'://前端连接wbsocket成功后
                 $rules = [
                     'client_id' => ['required', 'string'],
                 ];
@@ -54,23 +52,33 @@ class ImRequest extends FormRequest
             case 'send':
                 $rules = [
                     'type'     => ['required', 'string', Rule::in(['friend', 'group'])], // 群消息还是好友友消息
-                    'model_id' => ['required', 'integer'],//
+                    'model_id' => ['required', 'integer'],//todo 在其他地方或这个文件中验证model_id的有效性
                     'content'  => [
                         'required',
                         'array',
                         function ($attribute, $value, $fail) {
                             //todo 信息有效性进行验证
-                            //todo type: text emoji file system img  see https://github.com/mattmezza/vue-beautiful-chat
+                            //todo type: text emoji file system img
+
+                            if (!is_array($value)) {
+                                $fail('content参数错误');//todo 多语言
+                            }
+                            if (!isset($value['message_type'])) {//
+                                $fail('content类型错误');//todo 多语言
+                            }
+                            if (in_array($value['message_type'], ['text', 'emoji', 'file', 'system'])) {
+                                $fail('content类型错误');//todo 多语言
+                            }
+                            //去验证各个类型的信息
+                            switch ($value['type']) {
+                                case 'text':
+                                    break;
+                            }
                         }
                     ]
                 ];
                 break;
-            case 'chatRecords':
-                $rules = [
-                    'type'     => ['required', 'string', Rule::in(['friend', 'group'])],
-                    'model_id' => ['required', 'integer'],
-                ];
-                break;
+
             default:
                 break;
 

@@ -6,6 +6,7 @@ use Jcc\Im\Models\Group;
 use Jcc\Im\Models\GroupType;
 use Jcc\Im\Models\MsgBox;
 use Jcc\Im\Events\ImEventHandler;
+use Jcc\Im\Models\Settings;
 
 /**
  * im Plugin Information File
@@ -20,7 +21,9 @@ class Plugin extends PluginBase
      */
     public function register()
     {
-        $this->app->bind(\Jcc\Im\Contracts\Wbsocket\ImContract::class, \Jcc\Im\Services\ImService::class);
+
+
+
         $this->app->bind(\Jcc\Im\Contracts\Wbsocket\ChatContract::class, \Jcc\Im\Services\ChatService::class);
     }
 
@@ -31,13 +34,28 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+        /**
+         * 可配置 im_provider 适配不同平台的操作，参考 Jcc\Im\Services\ImService的实现
+         */
+        $this->app->bind(
+            \Jcc\Im\Contracts\Wbsocket\ImContract::class,
+            Settings::get('im_provider', \Jcc\Im\Services\ImService::class)
+        );
+
+        /**
+         * Im相关事件
+         */
         \Event::subscribe(new ImEventHandler);
+
+        /**
+         *用户扩展
+         */
         \Jcc\Jwt\Models\User::extend(function ($model) {
-            $model->hasMany['msgboxes']     = [
+            $model->hasMany['msgboxes']          = [
                 MsgBox::class,
                 'key' => 'user_id'
             ];
-            $model->belongsToMany['groups'] = [
+            $model->belongsToMany['groups']      = [
                 Group::class,
                 'table'    => 'jcc_im_user_groups',
                 'key'      => 'user_id',
@@ -51,7 +69,7 @@ class Plugin extends PluginBase
                 'otherKey' => 'group_type_id'
 
             ];
-            $model->implement[]             = \Jcc\Im\Behaviors\UserImBehavior::class;
+            $model->implement[]                  = \Jcc\Im\Behaviors\UserImBehavior::class;
         });
     }
 

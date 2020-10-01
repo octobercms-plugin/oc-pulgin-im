@@ -7,8 +7,14 @@ fields:
         label: jcc.im::lang.settings.fields.registerAddress.label
     support_before_bind:
         label: jcc.im::lang.settings.fields.support_before_bind.label
+        type: checkbox
         comment: jcc.im::lang.settings.fields.support_before_bind.comment
     support_after_bind:
         label: jcc.im::lang.settings.fields.support_after_bind.label
+        type: checkbox
         comment: jcc.im::lang.settings.fields.support_after_bind.comment
+    chat_record:
+        label: jcc.im::lang.settings.fields.chat_record.label
+        type: checkbox
+        comment: jcc.im::lang.settings.fields.chat_record.comment
 

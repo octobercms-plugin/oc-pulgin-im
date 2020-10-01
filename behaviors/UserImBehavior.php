@@ -45,6 +45,23 @@ class UserImBehavior extends \October\Rain\Extension\ExtensionBase
         return $chatRecordIds;
     }
 
+    public function setNoReadChatRecordIds($record)
+    {
+        $key         = 'User:' . $this->parent->id . 'ChatRecord:NoRead';
+        $noRecordIds = [];
+        if (\Cache::has($key)) {
+            $noRecordIds = json_decode(\Cache::get($key), true);
+        }
+        $noRecordIds[] = $record->id;
+
+        if (count($noRecordIds) > 100) {//存放一百条信息
+            $noRecordIds = array_slice($noRecordIds, -100);
+            //todo 根据用户的最近一次登陆时间，是否是僵尸用户，就不记了
+        }
+
+        \Cache::put($key, json_encode($noRecordIds), now()->addWeeks(1));//存放未读用户
+    }
+
 
     public function clearNoReadChatRecord()
     {

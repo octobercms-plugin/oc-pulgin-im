@@ -46,14 +46,23 @@ class ImEventHandler
             Gateway::sendToUid($user->id, json_encode($data, JSON_UNESCAPED_UNICODE));
             $user->setNoReadMsgboxesReaded();
         }
+    }
 
+    public function beforeSend($data)
+    {
+    }
+
+    public function afterSend($data)
+    {
     }
 
     public function subscribe($events)
     {
         $events->listen('jcc.im.beforeBind', 'ImEventHandler@beforeBind');
-
         $events->listen('jcc.im.afterBind', 'ImEventHandler@afterBind');
+
+        $events->listen('jcc.im.beforeSend', 'ImEventHandler@beforeSend');
+        $events->listen('jcc.im.afterSend', 'ImEventHandler@afterSend');
     }
 
 }

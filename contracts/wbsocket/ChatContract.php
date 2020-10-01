@@ -5,7 +5,6 @@ namespace Jcc\Im\Contracts\Wbsocket;
 interface ChatContract
 {
 
-    public function initData();//初始化信息
 
     public function members($data);//群成员列表
 
