@@ -21,4 +21,16 @@ fields:
         label: jcc.im::lang.settings.fields.friend_chat_record.label
         type: checkbox
         comment: jcc.im::lang.settings.fields.friend_chat_record.comment
+    user_not_online_send_system_msg:
+        label: jcc.im::lang.settings.fields.user_not_online_send_system_msg.label
+        type: checkbox
+        default: true
+        comment: jcc.im::lang.settings.fields.user_not_online_send_system_msg.comment
+    user_not_online_send_system_msg_times:
+        label: jcc.im::lang.settings.fields.user_not_online_msg_times.label
+        comment: jcc.im::lang.settings.fields.user_not_online_msg_times.comment
+        trigger:
+            action: show
+            field: user_not_online_send_system_msg
+            condition: value[1]
 

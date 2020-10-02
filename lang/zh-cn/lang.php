@@ -24,6 +24,11 @@
                 'comment' => ''
 
             ],
+            'user_not_online_send_system_msg'  => [
+                'label'   => '用户不在线是否发送系统离线消息',
+                'comment' => ''
+
+            ],
         ],
     ],
     'plugin'   => [

@@ -46,13 +46,7 @@ class ImService implements ImContract
         $user = auth('api')->user();
         switch ($data['type']) {
             case 'group':
-                $msg['username']  = $user->username;
-                $msg['avatar']    = $user->avatar->path;
-                $msg['id']        = $user->id;
-                $msg['timestamp'] = time() * 1000;
-                $msg['content']   = $data['content'];
-                $msg['type']      = 'group';
-
+                $msg = ChatRecord::msg($user, $data,);
                 $group = Group::find($data['model_id']);
 
                 \Event::fire('jcc.im.sending', [$user, $msg, $data, $this]);
@@ -66,12 +60,8 @@ class ImService implements ImContract
                 break;
             case 'friend':
                 //要发送的信息
-                $msg['username']  = $user->username;
-                $msg['avatar']    = $user->avatar->path;
-                $msg['id']        = $user->id;
-                $msg['timestamp'] = time() * 1000;
-                $msg['content']   = $data['content'];
-                $msg['type']      = 'friend';
+
+
 
                 \Event::fire('jcc.im.sending', [$user, $msg, $data, $this]);
 
@@ -83,7 +73,6 @@ class ImService implements ImContract
                 break;
         }
 
-        //Event::fire('jcc.im.sending', [$data]); //todo 发送过程中入库
     }
 
     public function sendToUid($data)
