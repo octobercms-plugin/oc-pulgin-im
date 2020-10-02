@@ -9,5 +9,6 @@ interface ImContract
     public function send($array);//发送信息
     public function sendToUid($array);//发送信息
     public function sendToGroup($array);//发送信息
+    public function isUidOnline($id);//是否在线
 
 }

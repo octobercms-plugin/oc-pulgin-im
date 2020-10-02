@@ -5,6 +5,7 @@ use GatewayClient\Gateway;
 use Jcc\Im\Http\Resources\UserImResource;
 use Jcc\Im\Models\Settings;
 use Jcc\Im\Models\ChatRecord;
+use Jcc\Im\Models\Group;
 
 class ImService implements ImContract
 {
@@ -42,7 +43,6 @@ class ImService implements ImContract
 
     public function send($data)
     {
-        //todo Gateway sending
         $user = auth('api')->user();
         switch ($data['type']) {
             case 'group':
@@ -55,33 +55,29 @@ class ImService implements ImContract
 
                 $group = Group::find($data['model_id']);
 
-                if (Settings::get('group_chat_record', true)) {
-                    //消息入库
-                    $record           = new ChatRecord();
-                    $record->type     = ChatRecord::TYPE_GROUP;
-                    $record->send_id  = $user->id;
-                    $record->group_id = $data['model_id'];
-                    $record->content  = json_encode($msg, JSON_UNESCAPED_UNICODE);
-                    $record->if_read  = ChatRecord::IF_READ_1;
-                    $record->save();
+                \Event::fire('jcc.im.sending', [$user, $msg, $data, $this]);
 
-                    //记录未读消息
-                    $users = $group->users()->get();
-                    $users->each(function ($item) use ($user, $record) {
 
-                        if (!Gateway::isUidOnline($item->id)) {//在线用户不操作
-                        } else {//不在线的群用户记录未读消息
-                            $item->setNoReadChatRecordIds($record);
-                        }
-                    });
-                }
-                Gateway::sendToGroup(
-                    $group->getBindImId(),
-                    json_encode($msg, JSON_UNESCAPED_UNICODE),
-                    Gateway::getClientIdByUid($user->getBindImId())
-                );
+                $sendData['bind_group_id'] = $group->getBindImId();
+                $sendData['content']       = json_encode($msg, JSON_UNESCAPED_UNICODE);
+                $sendData['bind_user_id']  = $user->getBindImId();
+                $this->sendToGroup($sendData);
+
                 break;
             case 'friend':
+                //要发送的信息
+                $msg['username']  = $user->username;
+                $msg['avatar']    = $user->avatar->path;
+                $msg['id']        = $user->id;
+                $msg['timestamp'] = time() * 1000;
+                $msg['content']   = $data['content'];
+                $msg['type']      = 'friend';
+
+                \Event::fire('jcc.im.sending', [$user, $msg, $data, $this]);
+
+                $sendData['bind_user_id'] = $user->getBindImId();
+                $sendData['content']      = json_encode($msg, JSON_UNESCAPED_UNICODE);
+                $this->sendToUid($sendData);
                 break;
             default:
                 break;
@@ -93,6 +89,11 @@ class ImService implements ImContract
     public function sendToUid($data)
     {
         Gateway::sendToUid($data['bind_user_id'], $data['content']);
+    }
+
+    public function isUidOnline($id)
+    {
+        return Gateway::isUidOnline($id);
     }
 
     public function sendToGroup($data)
