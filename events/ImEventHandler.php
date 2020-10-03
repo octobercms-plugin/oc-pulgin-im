@@ -139,11 +139,11 @@ class ImEventHandler
 
     public function subscribe($events)
     {
-        $events->listen('jcc.im.beforeBind', 'ImEventHandler@beforeBind');
-        $events->listen('jcc.im.afterBind', 'ImEventHandler@afterBind');
+        $events->listen('jcc.im.beforeBind', 'Jcc\Im\Events\ImEventHandler@beforeBind');
+        $events->listen('jcc.im.afterBind', 'Jcc\Im\Events\ImEventHandler@afterBind');
 
-        $events->listen('jcc.im.beforeSend', 'ImEventHandler@beforeSend');
-        $events->listen('jcc.im.sending', 'ImEventHandler@sending');
-        $events->listen('jcc.im.afterSend', 'ImEventHandler@afterSend');
+        $events->listen('jcc.im.beforeSend', 'Jcc\Im\Events\ImEventHandler@beforeSend');
+        $events->listen('jcc.im.sending', 'Jcc\Im\EventsImEventHandler@sending');
+        $events->listen('jcc.im.afterSend', 'Jcc\Im\Events\ImEventHandler@afterSend');
     }
 }
