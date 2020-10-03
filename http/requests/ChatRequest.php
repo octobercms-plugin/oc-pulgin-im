@@ -19,7 +19,6 @@ class ChatRequest extends FormRequest
         $method = $this->route()->getActionMethod();
 
         switch ($method) {
-
             case 'chatRecords':
                 //todo 发送权限验证
                 break;
@@ -39,11 +38,10 @@ class ChatRequest extends FormRequest
 
         $method = $this->route()->getActionMethod();
         switch ($method) {
-
             case 'chatRecords':
                 $rules = [
-                    'type'=>['required',Rule::in(['friend','group'])],
-                    'model_id'=>['required'],
+                    'type'     => ['required', Rule::in(['friend', 'group'])],
+                    'model_id' => ['required'],
                 ];
                 break;
             default:

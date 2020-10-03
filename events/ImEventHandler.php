@@ -98,7 +98,6 @@ class ImEventHandler
                     $record->if_read = ChatRecord::IF_READ_0;
                     $record->save();
                 }
-
                 if (Settings::get('user_not_online_send_system', true)) {//对方不在线是否发送已离线的系统消息
                     $key = ChatRecord::user_not_online_send_system_key($friend->id);
                     if (!\Cache::has($key)) {
@@ -107,7 +106,7 @@ class ImEventHandler
                             [
                                 'content' => [
                                     'type'    => 'text',
-                                    'content' => $friend->username . ':已离线'
+                                    'content' =>  '对方已离线...'
                                 ]
                             ],
                             'friend-system'

@@ -72,7 +72,6 @@ class ImService implements ImContract
             default:
                 break;
         }
-
     }
 
     public function sendToUid($data)
