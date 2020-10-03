@@ -40,7 +40,6 @@ class ChatService extends AbstractChatService
         }
 
         return new ChatRecordCollection($records);
-
     }
 
 }

@@ -46,7 +46,7 @@ class ImService implements ImContract
         $user = auth('api')->user();
         switch ($data['type']) {
             case 'group':
-                $msg = ChatRecord::msg($user, $data,);
+                $msg   = ChatRecord::msg($user, $data, 'group');
                 $group = Group::find($data['model_id']);
 
                 \Event::fire('jcc.im.sending', [$user, $msg, $data, $this]);
@@ -60,7 +60,6 @@ class ImService implements ImContract
                 break;
             case 'friend':
                 //要发送的信息
-
 
 
                 \Event::fire('jcc.im.sending', [$user, $msg, $data, $this]);
