@@ -13,8 +13,8 @@ class CreateUserGroupTypesTable extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('group_type_id');
+            $table->timestamp('join_time')->nullable()->comment('成为好友时间');
             $table->softDeletes();
-
             $table->timestamps();
         });
     }

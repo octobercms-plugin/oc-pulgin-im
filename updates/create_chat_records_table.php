@@ -12,7 +12,7 @@ class CreateChatRecordsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->unsignedInteger('send_id')->comment('发送者id');
-            $table->unsignedInteger('receive_id')->nullable()->comment('接收者id');
+            $table->unsignedInteger('receive_id')->default(0)->comment('接收者id');
             $table->unsignedInteger('group_id')->nullable()->comment('群组id');
             $table->string('type', 255)->nullable()->comment('消息类型 :friend 好友消息,group 群组消息');
             $table->text('content')->nullable()->comment('消息内容');
