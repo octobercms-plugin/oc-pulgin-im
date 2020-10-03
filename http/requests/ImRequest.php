@@ -70,7 +70,7 @@ class ImRequest extends FormRequest
                                 $fail('content类型错误');//todo 多语言
                             }
                             //去验证各个类型的信息
-                            switch ($value['type']) {
+                            switch ($value['message_type']) {
                                 case 'text':
                                     break;
                             }
