@@ -23,19 +23,19 @@ class ChatService extends AbstractChatService
         switch ($type) {
             case 'friend':
                 $records = ChatRecord::whereIn(
-                    'send_id',
+                    'from_id',
                     [$user->id, $data['model_id']]
                 )
                     ->whereIn(
-                        'receive_id',
+                        'to_id',
                         [$user->id, $data['model_id']]
                     )->where('type', ChatRecord::TYPE_FRIEND)->oldest('created_at')->paginate(request()->limit ?? 10);
                 break;
             case 'group':
                 //todo 可根据加入时间过滤掉加入之前的信息
-                $records = ChatRecord::where('receive_id', 0)
-                    ->where('group_id', $data['model_id'])
-                    ->where('type', ChatRecord::MSG_TYPE_GROUP)->oldest('created_at')->paginate(request()->limit ?? 10);
+                $records = ChatRecord::where('to_id', 0)
+                    ->where('to_group_id', $data['model_id'])
+                    ->where('type', ChatRecord::TYPE_GROUP)->oldest('created_at')->paginate(request()->limit ?? 10);
                 break;
         }
 
