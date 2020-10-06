@@ -93,7 +93,6 @@ class UserImBehavior extends \October\Rain\Extension\ExtensionBase
 
     public function saveCharRecord($data)
     {
-
         $record                   = new ChatRecord();
         $record->type             = $data['type'];
         $record->chat_source_type = $data['chat_source_type'];//后台追加
@@ -103,6 +102,7 @@ class UserImBehavior extends \October\Rain\Extension\ExtensionBase
         $record->content          = $data['content']['value'];
         $record->extra            = $data['content'];
         $record->save();
+        return $record;
     }
 
     //绑定到wbsocket的唯一标识符

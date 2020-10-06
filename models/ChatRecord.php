@@ -151,6 +151,7 @@ class ChatRecord extends Model
     public static function transform_msg($user, $data)
     {
         $msg = [
+            'id'               => isset($data['id']) ? $data['id'] : '',
             'type'             => $data['type'],
             'from_id'          => $user->id,
             'from_avatar'      => $user->avatar->path,
@@ -158,7 +159,8 @@ class ChatRecord extends Model
             'chat_source_type' => $data['chat_source_type'],//后台追加的
             'content_type'     => $data['content_type'],
             'content'          => $data['content']['value'],
-            'extra'            => $data['content'] //额外的一些信息
+            'extra'            => $data['content'], //额外的一些信息
+            'send_time'        => time() * 1000
         ];
         return $msg;
     }

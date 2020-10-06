@@ -67,11 +67,10 @@ class ImEventHandler
                 $group = Group::find($data['model_id']);
                 //消息入库
                 $data['chat_source_type'] = ChatRecord::CHAT_SOURCE_TYPE_GROUP;
-                $record = $user->saveChatRecord($data);
-                $record->if_read = ChatRecord::IF_READ_1;
+                $record                   = $user->saveChatRecord($data);
+                $record->if_read          = ChatRecord::IF_READ_1;
                 $record->save();
-
-
+                $msg['id'] = $record->id;
                 //记录未读消息
                 $users = $group->users()->get();
                 $users->each(function ($item) use ($user, $record, $im) {
@@ -89,12 +88,16 @@ class ImEventHandler
                     $record          = $user->saveChatRecord($data);
                     $record->if_read = ChatRecord::IF_READ_1;
                     $record->save();
+                    $msg['id'] = $record->id;
+
                 }
             } else {
                 if (Settings::get('friend_chat_record', true)) {//对方不在线是否记录聊天记录
                     $record          = $user->saveChatRecord($data);
                     $record->if_read = ChatRecord::IF_READ_0;
                     $record->save();
+                    $msg['id'] = $record->id;
+
                 }
                 if (Settings::get('user_not_online_send_system', true)) {//对方不在线是否发送已离线的系统消息
                     $friend = \Jcc\jwt\Models\User::find($data['model_id']);
@@ -106,10 +109,11 @@ class ImEventHandler
                         $data['content_type']     = ChatRecord::CONTENT_TYPE_TEXT;
 
                         //保存离线记录
-                        $user->saveCharRecord($data);
+                        $notOnlineRecord = $user->saveCharRecord($data);
 
                         //发送离线消息
                         $notOnlineMsg         = ChatRecord::transform_msg($user, $data);//不在线的发送的信息
+                        $notOnlineMsg['id']   = $notOnlineRecord->id;
                         $data['bind_user_id'] = $user->getBindImId();
                         $data['content']      = $notOnlineMsg;
                         $im->sendToUid($data);
