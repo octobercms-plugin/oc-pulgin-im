@@ -91,6 +91,20 @@ class UserImBehavior extends \October\Rain\Extension\ExtensionBase
         return $this->parent->msgboxes()->where('read', MsgBox::READ_0)->update(['read' => MsgBox::READ_1]);
     }
 
+    public function saveCharRecord($data)
+    {
+
+        $record                   = new ChatRecord();
+        $record->type             = $data['type'];
+        $record->chat_source_type = $data['chat_source_type'];//后台追加
+        $record->content_type     = $data['content_type'];
+        $record->from_id          = $this->parent->id;
+        $record->from_avatar      = $this->parent->avatar->path;
+        $record->content          = $data['content']['value'];
+        $record->extra            = $data['content'];
+        $record->save();
+    }
+
     //绑定到wbsocket的唯一标识符
 
     public function getBindImId()

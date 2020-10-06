@@ -46,10 +46,9 @@ class ImService implements ImContract
         $user = auth('api')->user();
         switch ($data['type']) {
             case 'group':
-                $msg   = ChatRecord::msg($user, $data, 'group');
                 $group = Group::find($data['model_id']);
 
-                \Event::fire('jcc.im.sending', [$user, $msg, $data, $this]);
+                $msg = \Event::fire('jcc.im.sending', [$user, $data, $this]);
 
 
                 $sendData['bind_group_id'] = $group->getBindImId();
@@ -62,7 +61,7 @@ class ImService implements ImContract
                 //要发送的信息
 
 
-                \Event::fire('jcc.im.sending', [$user, $msg, $data, $this]);
+                $msg = \Event::fire('jcc.im.sending', [$user, $data, $this]);
 
                 $sendData['bind_user_id'] = $user->getBindImId();
                 $sendData['content']      = json_encode($msg, JSON_UNESCAPED_UNICODE);

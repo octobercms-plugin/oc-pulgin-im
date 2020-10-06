@@ -56,21 +56,21 @@ class ImEventHandler
     {
     }
 
-    public function sending($user, $msg, $data, $im)
+    public function sending($user, $data, $im)
     {
+
+        $msg = ChatRecord::transform_msg($user, $data);//要发送的信息
 
         if ($data['type'] == 'group') {
             //是否记录群组消息
             if (Settings::get('group_chat_record', true)) {
                 $group = Group::find($data['model_id']);
                 //消息入库
-                $record           = new ChatRecord();
-                $record->type     = ChatRecord::TYPE_GROUP;
-                $record->send_id  = $user->id;
-                $record->group_id = $data['model_id'];
-                $record->content  = json_encode($msg, JSON_UNESCAPED_UNICODE);
-                $record->if_read  = ChatRecord::IF_READ_1;
+                $data['chat_source_type'] = ChatRecord::CHAT_SOURCE_TYPE_GROUP;
+                $record = $user->saveChatRecord($data);
+                $record->if_read = ChatRecord::IF_READ_1;
                 $record->save();
+
 
                 //记录未读消息
                 $users = $group->users()->get();
@@ -82,46 +82,38 @@ class ImEventHandler
                 });
             }
         } elseif ($data['type'] == 'friend') {
-            $friend             = \Jcc\jwt\Models\User::find($data['model_id']);
-            $record             = new ChatRecord();
-            $record->type       = ChatRecord::TYPE_FRIEND;
-            $record->send_id    = $user->id;
-            $record->receive_id = $data['model_id'];
-            $record->content    = json_encode($msg, JSON_UNESCAPED_UNICODE);
+            $data['chat_source_type'] = ChatRecord::CHAT_SOURCE_TYPE_FRIEND;
+
             if ($im->isUidOnline($user->getBindImId())) {
                 if (Settings::get('friend_chat_record', true)) {
+                    $record          = $user->saveChatRecord($data);
                     $record->if_read = ChatRecord::IF_READ_1;
                     $record->save();
                 }
             } else {
                 if (Settings::get('friend_chat_record', true)) {//对方不在线是否记录聊天记录
+                    $record          = $user->saveChatRecord($data);
                     $record->if_read = ChatRecord::IF_READ_0;
                     $record->save();
                 }
                 if (Settings::get('user_not_online_send_system', true)) {//对方不在线是否发送已离线的系统消息
-                    $key = ChatRecord::user_not_online_send_system_key($friend->id);
+                    $friend = \Jcc\jwt\Models\User::find($data['model_id']);
+                    $key    = ChatRecord::user_not_online_send_system_key($friend->id);
                     if (!\Cache::has($key)) {
-                        $msg = ChatRecord::msg(
-                            $user,
-                            [
-                                'content' => [
-                                    'type'    => 'text',
-                                    'content' =>  '对方已离线...'
-                                ]
-                            ],
-                            'friend-system'
-                        );
+                        $data['chat_source_type'] = ChatRecord::CHAT_SOURCE_TYPE_FRIEND_SYSTEM_NOT_ONLINE;//消息来源为系统不在线
+                        $data['content']['value'] =
+                            ChatRecord::$chatSourceTypeMaps[ChatRecord::CHAT_SOURCE_TYPE_FRIEND_SYSTEM_NOT_ONLINE];
+                        $data['content_type']     = ChatRecord::CONTENT_TYPE_TEXT;
 
-                        $record          = new ChatRecord();
-                        $record->type    = ChatRecord::MSG_TYPE_FRIEND_SYSTEM;
-                        $record->send_id = $user->id;
+                        //保存离线记录
+                        $user->saveCharRecord($data);
 
-                        $record->content = json_encode($msg, JSON_UNESCAPED_UNICODE);
-                        $record->ssave();
-
+                        //发送离线消息
+                        $notOnlineMsg         = ChatRecord::transform_msg($user, $data);//不在线的发送的信息
                         $data['bind_user_id'] = $user->getBindImId();
-                        $data['content']      = $msg;
+                        $data['content']      = $notOnlineMsg;
                         $im->sendToUid($data);
+
                         \Cache::put(
                             $key,
                             1,
@@ -131,6 +123,7 @@ class ImEventHandler
                 }
             }
         }
+        return $msg;
     }
 
     public function afterSend($data)

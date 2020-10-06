@@ -51,7 +51,9 @@ class ImRequest extends FormRequest
                 break;
             case 'send':
                 $rules = [
-                    'type'     => ['required', 'string', Rule::in(['friend', 'group'])], // 群消息还是好友友消息
+                    'type'     => ['required', 'string', Rule::in(['friend', 'group'])], // 群消息还是好友友消息,还是系统消息
+                    'content_type' => ['required', 'string',
+                        Rule::in(['text', 'img', 'file', 'emoji'])], // 消息类型
                     'model_id' => ['required', 'integer'],//todo 在其他地方或这个文件中验证model_id的有效性
                     'content'  => [
                         'required',
@@ -63,15 +65,33 @@ class ImRequest extends FormRequest
                             if (!is_array($value)) {
                                 $fail('content参数错误');//todo 多语言
                             }
-                            if (!isset($value['message_type'])) {//
-                                $fail('content类型错误');//todo 多语言
-                            }
-                            if (in_array($value['message_type'], ['text', 'emoji', 'file', 'system'])) {
-                                $fail('content类型错误');//todo 多语言
-                            }
+//                            if (!isset($value['message_type'])) {//
+//                                $fail('content类型错误');//todo 多语言
+//                            }
+//                            if (in_array($value['message_type'], ['text', 'emoji', 'file', 'system'])) {
+//                                $fail('content类型错误');//todo 多语言
+//                            }
                             //去验证各个类型的信息
-                            switch ($value['message_type']) {
+                            switch ($this->content_type) {
                                 case 'text':
+                                    if (!isset($value['value'])&&!$value['value']) {
+                                        $fail('value类型错误');
+                                    }
+                                    break;
+                                case 'img':
+                                    if (!isset($value['value'])&&!$value['value']) {
+                                        $fail('value类型错误');
+                                    }
+                                    break;
+                                case 'file':
+                                    if (!isset($value['value'])&&!$value['value']) {
+                                        $fail('value类型错误');
+                                    }
+                                    break;
+                                case 'emoji':
+                                    if (!isset($value['value'])&&!$value['value']) {
+                                        $fail('value类型错误');
+                                    }
                                     break;
                             }
                         }
