@@ -28,7 +28,7 @@ class UserImResource extends JsonResource
                 })
             ],
             'friend' => GroupTypeResource::collection($this->whenLoaded('group_types')),
-            'group'  => GroupResource::collection($this->whenLoaded('groups'))
+            'group'  => GroupResource::collection($this->whenLoaded('im_groups'))
         ];
     }
 }

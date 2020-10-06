@@ -6,6 +6,7 @@ use Jcc\Im\Models\Group;
 use Jcc\Im\Models\GroupType;
 use Jcc\Im\Models\MsgBox;
 use Jcc\Im\Events\ImEventHandler;
+use Jcc\Im\Events\ChatEventHandler;
 use Jcc\Im\Models\Settings;
 
 /**
@@ -23,6 +24,7 @@ class Plugin extends PluginBase
     {
 
 
+        $this->app->register(\Jcc\Im\Providers\AuthServiceProvider::class);
 
         $this->app->bind(\Jcc\Im\Contracts\Wbsocket\ChatContract::class, \Jcc\Im\Services\ChatService::class);
     }
@@ -48,6 +50,11 @@ class Plugin extends PluginBase
         \Event::subscribe(new ImEventHandler);
 
         /**
+         * 聊天记录事件
+         */
+        \Event::subscribe(new ChatEventHandler);
+
+        /**
          *用户扩展
          */
         \Jcc\Jwt\Models\User::extend(function ($model) {
@@ -55,7 +62,7 @@ class Plugin extends PluginBase
                 MsgBox::class,
                 'key' => 'user_id'
             ];
-            $model->belongsToMany['groups']      = [
+            $model->belongsToMany['im_groups']      = [
                 Group::class,
                 'table'    => 'jcc_im_user_groups',
                 'key'      => 'user_id',

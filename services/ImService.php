@@ -24,7 +24,7 @@ class ImService implements ImContract
 //        $user = \Jcc\jwt\Models\User::first();
         $user->load('avatar');
         $user->load('group_types.users');
-        $user->load('groups.users');
+        $user->load('im_groups.users');
         return new UserImResource($user);
     }
 

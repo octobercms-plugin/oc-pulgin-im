@@ -10,6 +10,8 @@ class ChatController extends Controller
     public function chatRecords(ChatRequest $request)
     {
         $data = $request->validationData();
+        $user = auth('api')->user();
+        $this->authorizeForUser($user, 'chatRecords', [\Jcc\Im\Models\ChatRecord::class,$data]);
         Event::fire('jcc.im.beforeGetChatRecords', [$data]);
         $chatRecords = app()->make(\Jcc\Im\Contracts\Wbsocket\ChatContract::class)->chatRecords($data);
         Event::fire('jcc.im.afterGetChatRecords', [$chatRecords]);

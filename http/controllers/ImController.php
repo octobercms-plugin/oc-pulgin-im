@@ -9,6 +9,7 @@ class ImController extends Controller
 {
 
     /**
+     * todo 可根据具体业务优化
      * @param ImRequest $request
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\JsonResource
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
